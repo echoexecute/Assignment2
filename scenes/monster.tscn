@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://k1cc25vpvbt6"]
+
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_6pnyp"]
+[ext_resource type="Texture2D" uid="uid://bjanddymxktsf" path="res://assets/sprites/characters/slime.png" id="2_osrmf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1xxjh"]
+radius = 37.1214
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_61xw1"]
+radius = 15.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2ubj3"]
+radius = 7.0
+
+[node name="Monster" type="Node2D"]
+
+[node name="Enemy" type="CharacterBody2D" parent="."]
+position = Vector2(16, 19)
+script = ExtResource("1_6pnyp")
+
+[node name="Slime" type="Sprite2D" parent="Enemy"]
+position = Vector2(-15, -16)
+texture = ExtResource("2_osrmf")
+hframes = 7
+vframes = 4
+
+[node name="DetectionRadius" type="Area2D" parent="Enemy"]
+position = Vector2(0, -2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/DetectionRadius"]
+position = Vector2(-16, -16)
+shape = SubResource("CircleShape2D_1xxjh")
+debug_color = Color(0.862745, 0.964706, 0, 0.419608)
+
+[node name="AttackRadius" type="Area2D" parent="Enemy"]
+position = Vector2(0, -2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/AttackRadius"]
+position = Vector2(-16, -16)
+shape = SubResource("CircleShape2D_61xw1")
+debug_color = Color(0.996078, 0, 0.176471, 0.419608)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+position = Vector2(-16, -18)
+shape = SubResource("CircleShape2D_2ubj3")
+
+[connection signal="body_entered" from="Enemy/DetectionRadius" to="Enemy" method="_on_detection_radius_body_entered"]
+[connection signal="body_exited" from="Enemy/DetectionRadius" to="Enemy" method="_on_detection_radius_body_exited"]
+[connection signal="body_entered" from="Enemy/AttackRadius" to="Enemy" method="_on_attack_radius_body_entered"]
+[connection signal="body_exited" from="Enemy/AttackRadius" to="Enemy" method="_on_attack_radius_body_exited"]
